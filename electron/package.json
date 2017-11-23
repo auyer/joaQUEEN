@@ -1,22 +1,24 @@
 {
-  "name": "JoaQUEEN",
+  "name": "electron-angularjs-sqlite",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Um aplicativo simples usando AngularJS, Sqlite, Electron e Bootstrap",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron main.js",
+    "win32": "electron-packager . myApp --platform=win32 --arch=ia32",
+    "win64": "electron-packager . myApp --platform=win32 --arch=x64",
+    "linux32": "electron-packager . myApp --platform=linux --arch=ia32",
+    "linux64": "electron-packager . myApp --platform=linux --arch=x64",
+    "osx": "electron-packager . myApp --platform=darwin --arch=x64",
+    "build": "electron-packager . --all"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "~1.6.2"
+    "electron-prebuilt": "^0.36.0",
+    "electron-packager": "^6.0.0",
+    "sqlite-sync": "^0.2.1",
+    "jquery": "^2.2.2",
+    "angular": "^1.5.1",
+    "angular-route": "^1.5.1",
+    "angular-utils-pagination": "^0.11.0"
   }
 }

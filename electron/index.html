@@ -1,44 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>JoaQUEEN App</title>
-  </head>
-  <body>
-    <h1>Welcome to JoaQUEEN ! </h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-  <footer>
-    <p>Built with 🌚   by : </p>
-    <p>JoaQUEEN, the Unburnt, Queen of the Andals and the First Men, Khaleesi of the Great Grass Sea, Breaker of Chains, and Mother of Dragons. © 2017</p>
-  </footer>
-  </body>
+<html ng-app="cdg">
+<head>
+	<title>joaQUEEN</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 
-  <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
-  </script>
+	<!-- jQuery -->
+	<script>window.$ = window.jQuery = require('jquery');</script>
+	<script>
+
+	</script>
+
+	<!-- Bootstrap -->
+	<script src="bootstrap/js/bootstrap.js"></script>
+
+	<!-- Angular -->
+	<script src="node_modules/angular/angular.js"></script>
+	<!-- Angular - Pagination -->
+	<script src="node_modules/angular-utils-pagination/dirPagination.js"></script>
+
+	<!-- App -->
+	<script src="app.js"></script>
+
+	<!-- Controllers -->
+	<script src="controllers/pessoaController.js"></script>
+
+	<!-- Services -->
+	<script src="services/dbService.js"></script>
+</head>
+<body>
+	<!-- Menu -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#/">
+					joaQUEEN
+				</a>
+			</div>
+		</div>
+	</nav>
+	<!-- Onde será carregada a view -->
+	<div ng-view="" class="container"></div>
+</body>
 </html>

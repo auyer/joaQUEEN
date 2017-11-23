@@ -1,0 +1,185 @@
+<div class="row">
+	<div class="col-md-8">
+		<button class="btn btn-primary" data-toggle="modal" data-target="#modalPessoa"><span class="glyphicon glyphicon-plus"></span>Upload New Song</button>
+	</div>
+	<div class="col-md-4">
+		<input class="form-control" placeholder="Search" ng-model="pesquisar">
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-striped" ng-init="listaPessoas()">
+			<thead>
+				<th>#</th>
+				<th>Title</th>
+				<th>Artist</th>
+				<th>Genre</th>
+				<!-- <th>Nascimento</th> -->
+				<th></th>
+			</thead>
+			<tbody>
+				<!-- Listagem -->
+				<tr dir-paginate="music in musics|filter:pesquisar|itemsPerPage:8">
+					<td>{{music.id}}</td>
+					<td>{{music.title}}</td>
+					<td>{{music.genre}}</td>
+					<td>
+						<button class="btn btn-info btn-xs" ng-click="editar(pessoa)"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+						<button class="btn btn-danger btn-xs" ng-click="excluir(pessoa)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- Paginação -->
+<div class="row">
+	<div class="col-md-12 text-center">
+		<dir-pagination-controls>
+	    </dir-pagination-controls>
+	</div>
+</div>
+
+<!-- <div>
+	<audio controls>
+ <source name="player" src="" type="audio/mp3">
+Your browser does not support the audio element.
+</audio>
+</div> -->
+
+<!-- Modal Cadastro e Edição -->
+<div class="modal fade" id="modalPessoa" tabindex="-1" role="dialog" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title" id="myModalLabel">Music</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Title</label>
+						<input name="title" class="form-control" type="text" ng-model="pessoa.nome">
+					</div>
+					<div class="col-md-6">
+						<label>Artist</label>
+						<input name="artist" class="form-control" type="text" ng-model="pessoa.email">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<label>Genre</label>
+						<input name="genre" class="form-control" type="text" ng-model="pessoa.nascimento">
+					</div>
+					<div class="col-md-6">
+						<input type="file" accept="audio/*" name="fileUpload">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button name="cancel" id="cancel" type="button" class="btn btn-default" ng-click="pessoa = {}" data-dismiss="modal">Cancel</button>
+				<button name="save" id="save" type="button" class="btn btn-primary" name="btnEnviar" onclick="salvar()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var context = new AudioContext();
+	var source = null;
+	var audioBuffer = null;
+	var code64 = "sdf";
+	var json = null;
+
+	var bufferToBase64 = function (buffer) {
+		var bytes = new Uint8Array(buffer);
+		var len = buffer.byteLength;
+		var binary = "";
+		for (var i = 0; i < len; i++) {
+			binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
+	};
+
+	function initSound(arrayBuffer) {
+		var base64String =""
+		//alert(base64String);
+		//alert(code64);
+		code64 = bufferToBase64(arrayBuffer);
+		//alert(code64);
+		var audioFromString = base64ToBuffer(base64String);
+		context.decodeAudioData(audioFromString, function (buffer) {
+		}, function (e) {
+			console.log('Error decoding file', e);
+		});
+		//return base64String;
+	}
+	var fileInput = document.querySelector('input[type="file"]');
+	fileInput.addEventListener('change', function (e) {
+		var reader = new FileReader();
+		reader.onload = function (e) {
+			initSound(this.result);
+		};
+		reader.readAsArrayBuffer(this.files[0]);
+		return recebeString;
+	}, false);
+
+	var musicas = [];
+	function salvar(){
+		var vartitulo = $(document.getElementsByName('title')).val();
+		var varartista = $(document.getElementsByName('artist')).val();
+		var vargenero = $(document.getElementsByName('genre')).val();
+		//var arquivo = $(document.getElementsByName('arquivo').val());
+		var varmetadata = {titulo: vartitulo, artista: varartista, genero: vargenero};
+		//alert(code64);
+		var dados = {metadata : varmetadata,file: code64, ext:"mp3"};
+		//alert(JSON.stringfy(dados));
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "http://localhost:4000/api/new", true);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(JSON.stringify(dados));
+		//xhttp.onla
+
+		window.location.reload();
+		//load();
+		//var response = JSON.parse(xhttp.responseText);
+		//alert(xhttp.responseText);
+	}
+
+	function load() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "http://localhost:4000/api/list", false);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send();
+		respj = xhttp.responseText;
+		//alert(response);
+	}
+	function play(file){
+		alert(file);
+		var src="http://localhost:4000" + file;
+		alert(src);
+		document.getElementsByName("player").setAttribute("src",srcA);
+	}
+
+	$(document).ready(function () {
+    $.getJSON("http://localhost:4000/api/list",
+    function (json) {
+        var tr;
+        for (var i = 0; i < json.length; i++) {
+            tr = $('<tr/>');
+            tr.append("<td>" + json[i].id + "</td>");
+            tr.append("<td>" + json[i].metadata.titulo + "</td>");
+			tr.append("<td>" + json[i].metadata.genero + "</td>");
+			tr.append("<td>" + json[i].metadata.artista + "</td>");
+			tr.append('<td><button class="btn btn-info btn-xs" ng-click="editar(pessoa)"><span class="glyphicon glyphicon-pencil"></span> Edit</button><button class="btn btn-danger btn-xs" ng-click="excluir(pessoa)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>');
+            //tr.append('<td><button class="btn btn-info btn-xs" ng-click="play(' + json[i].file +')"><span class="glyphicon glyphicon-play"></span></button></td>')
+            tr.append('<audio controls><source name="player" src="'+ "http://localhost:4000" +json[i].file +'" type="audio/mp3"></audio>')
+			$('table').append(tr);
+        	}
+    	});
+	});
+	//var srcA = "";
+	</script>
