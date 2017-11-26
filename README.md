@@ -5,6 +5,9 @@
 
 ## Model Flow
 
+![Flow Image](https://github.com/auyer/joaQUEEN/blob/master/ModelFLow.png)
+
+Mermaid FLow Graph code: 
 ```mermaid
 graph TD
 A[User Interface] ==>|Sends User EVENT| B(JavaScript CORE: Event Handling + OO)
